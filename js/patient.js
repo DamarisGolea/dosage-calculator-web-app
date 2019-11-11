@@ -23,7 +23,7 @@ window.dosageCalculator = {
             contentType: "application/json",
             data: JSON.stringify(patient)
         }).done(function () {
-            dosageCalculator.createPatient();
+            dosageCalculator.getPatients();
         })
     },
 
@@ -54,17 +54,28 @@ window.dosageCalculator = {
                 <td>${patient.cnp}</td>
                 <td>${patient.age}</td>
                 <td>${patient.weight}</td>
-                <td><a href="#" class="delete-item fa fa-trash" data-id="${patient.id}"></a></td>
+                <td><a href="#" class="delete-patient fa fa-trash" data-id="${patient.id}"></a></td>
             </tr>`
     },
 
     deletePatient: function (patientId) {
         $.ajax({
-            url: dosageCalculator.API_BASE_URL + "?id=" + patientId,
+            url: dosageCalculator.API_BASE_URL + "/patients/" + patientId,
             method: "DELETE"
         }).done(function () {
             dosageCalculator.getPatients();
         })
+    },
+
+    calculateDose:function (prodecureType, weight) {
+        $.ajax({
+            url: dosageCalculator.API_BASE_URL + "/dosages/getByProcedureAndWeight" + prodecureType + weight,
+            method: "GET",
+        }).done(function (response) {
+            console.log("Successfully received response");
+            console.log(response);
+        })
+
     },
 
     bindEvents: function () {
@@ -84,8 +95,17 @@ window.dosageCalculator = {
             dosageCalculator.deletePatient(patientId);
         });
 
+        $('#cover').delegate('.calculate-dose', 'click', function (event) {
+            event.preventDefault()
+            var procedureType = $(this).data('procedureType');
+            var weight= $(this).data('weight')
+
+            dosageCalculator.calculateDose(procedureType, weight);
+        })
+
     }
 };
 
 dosageCalculator.getPatients();
 dosageCalculator.bindEvents();
+dosageCalculator.calculateDose();
