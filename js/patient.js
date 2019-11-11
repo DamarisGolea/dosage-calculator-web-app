@@ -67,15 +67,11 @@ window.dosageCalculator = {
         })
     },
 
-    calculateDose:function (prodecureType, weight) {
-        $.ajax({
-            url: dosageCalculator.API_BASE_URL + "/dosages/getByProcedureAndWeight" + prodecureType + weight,
+    calculateDose: function (procedureType, weight) {
+        return $.ajax({
+            url: dosageCalculator.API_BASE_URL + "/dosages/getByProcedureAndWeight/" + procedureType + '/' + weight,
             method: "GET",
-        }).done(function (response) {
-            console.log("Successfully received response");
-            console.log(response);
         })
-
     },
 
     bindEvents: function () {
@@ -95,17 +91,25 @@ window.dosageCalculator = {
             dosageCalculator.deletePatient(patientId);
         });
 
-        $('#cover').delegate('.calculate-dose', 'click', function (event) {
-            event.preventDefault()
-            var procedureType = $(this).data('procedureType');
-            var weight= $(this).data('weight')
+        $('form[name="fn"]').submit(function (event) {
+            const INPUT_SEL = 'input#wm';
+            const SELECT_SEL = 'select';
+            const RESULT_SEL = '#result';
 
-            dosageCalculator.calculateDose(procedureType, weight);
+            event.preventDefault();
+            var procedureType = $(this).find(SELECT_SEL).val();
+            var weight = $(this).find(INPUT_SEL).val();
+
+            dosageCalculator
+                .calculateDose(procedureType, weight)
+                .done(function (response) {
+                    $(RESULT_SEL).text(response);
+                })
         })
-
     }
 };
 
-dosageCalculator.getPatients();
-dosageCalculator.bindEvents();
-dosageCalculator.calculateDose();
+$(document).ready(function () {
+    dosageCalculator.getPatients();
+    dosageCalculator.bindEvents();
+})

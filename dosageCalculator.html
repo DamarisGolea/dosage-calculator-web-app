@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dosage-Calculator</title>
+    <title></title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet"
@@ -11,9 +11,8 @@
 <body>
 <div class="content">
     <h1>GAMMA MEDICAL</h1>
-    <h2>Dosage Calculator</h2>
 
-    <h3>Enter new patient.</h3>
+    <h2>Enter new patient.</h2>
     <form id="new-patient-form">
         <label for="FirstName-field">First Name</label>
         <input type="text" id="FirstName-field" placeholder="Enter First Name">
@@ -82,10 +81,10 @@
                     </select><tr>
                 <td><tr>
                 <td>Weight <span id=twm> (Kgs)</span>
-                <td><input id=wm><tr>
+                <td><input id=wm autocomplete="off"><tr>
                 <td><button type=reset>Reset</button>
-                <td><button type=button>Submit</button>
-                <tr></tr><td>Result<td><input id=bmi class=op>
+                <td><button type=submit>Submit</button>
+                <tr></tr><td>Result<td><p id=result class=op>
             </td>
             </table>
             </form>
